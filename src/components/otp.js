@@ -1,34 +1,22 @@
 import React from "react";
 import { useFormik } from "formik";
-import axios from "axios"
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 
 function Otp() {
-  let mob = sessionStorage.getItem("mob")
-  const navigate = useNavigate()
+  let mob = sessionStorage.getItem("mob");
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       otp: "",
-      number:mob
+      number: mob,
     },
     onSubmit: async (values) => {
-      let loginData;
       try {
-        await axios.post("http://localhost:5000/api/auth/otp", values)
-        .then(function(res){
-          loginData=res.data;
-          console.log( "login data: "+ JSON.stringify(loginData) )
-          sessionStorage.setItem("my_token", JSON.stringify(loginData))
-        })
-        let myToken=sessionStorage.getItem("my_token", loginData)    
-        console.log(!myToken)
-            if (!myToken) {
-          navigate("/")
-        } else {
-          navigate("/dashboard")
-        }
-
+        let loginData = await axios.post("http://localhost:5000/api/auth/otp", values)
+        window.sessionStorage.setItem("my_token", loginData.data.token)
+        navigate("/userdashboard")
       } catch (error) {
         console.log(error)
       }
@@ -38,36 +26,40 @@ function Otp() {
     <>
       <div>
         <section className="vh-100">
-          <div className="container py-3 h-100" id='userLogin'>
+          <div className="container py-3 h-100" id="userLogin">
             <div className="row d-flex justify-content-center align-items-center h-100">
               <div className="col col-xl-10">
-                <div className="card " id='card' >
+                <div className="card " id="card">
                   <div className="row g-0">
-
                     <div className="col-md-6 col-lg-7 d-flex align-items-center">
                       <div className="card-body p-5 p-lg-5 text-black">
-
                         <form onSubmit={formik.handleSubmit}>
-
                           <div className="d-flex align-items-center mb-3 pb-1">
                             <span className="h1 fw-bold mb-0">OTP Login</span>
                           </div>
 
-
-                          <h6 className='h6 fw-bold mb-0'>Enter Your Otp:</h6>
+                          <h6 className="h6 fw-bold mb-0">Enter Your Otp:</h6>
                           <div className="form-outline mb-4">
-                            <input type="otp" className="form-control form-control-lg" placeholder='otp' name='otp' onChange={formik.handleChange}
-                              value={formik.values.otp} required />
-
+                            <input
+                              type="otp"
+                              className="form-control form-control-lg"
+                              placeholder="otp"
+                              name="otp"
+                              onChange={formik.handleChange}
+                              value={formik.values.otp}
+                              required
+                            />
                           </div>
-
 
                           <div className="pt-1 mb-4">
-                            <button type="submit " className="btn btn-dark btn-lg btn-block" >Login</button>
+                            <button
+                              type="submit "
+                              className="btn btn-dark btn-lg btn-block"
+                            >
+                              Login
+                            </button>
                           </div>
-
                         </form>
-
                       </div>
                     </div>
                   </div>

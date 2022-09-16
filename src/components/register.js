@@ -16,7 +16,9 @@ function Register() {
     onSubmit: async (values) => {
       try {
         await axios.post("http://localhost:5000/api/auth/register", values);
-        localStorage.setItem("mob",values.number)
+        console.log(values)
+        sessionStorage.setItem("mob", values.number);
+        sessionStorage.setItem("work", values.inlineRadioOptions);
         navigate("/otp");
       } catch (error) {
         console.log(error);
@@ -26,7 +28,7 @@ function Register() {
   return (
     <>
       <div>
-      <h1>Doctor On Boarding</h1>
+        <h1>Doctor On Boarding</h1>
         <section className="vh-100">
           <div className="container py-3 h-100" id="userLogin">
             <div className="row d-flex justify-content-center align-items-center h-100">
@@ -101,7 +103,7 @@ function Register() {
                                 value="Hospital / Polyclinic / Nursing home"
                               />
                               <label htmlFor="inlineRadio2">
-                                Hospital / Polyclinic / Nursing home{" "}
+                                Hospital / Polyclinic / Nursing home
                               </label>
                             </div>
                           </div>
@@ -121,6 +123,11 @@ function Register() {
                             Already a User Login Here ⬇{" "}
                             <Link to={"/login"}> Login</Link>{" "}
                           </p>
+
+
+                          <hr className="my-4" />
+                       
+                        <p className="mb-5 pb-lg-2" >Admin account? <Link to={"/adminLogin"}>Admin</Link></p>
                         </form>
                       </div>
                     </div>
